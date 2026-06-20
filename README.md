@@ -12,6 +12,35 @@ lets you jump to them with short two-key labels.
 - Jumps from the source buffer by typing the visible mark, such as `aa` or `as`.
 - Jumps from the list window by moving the cursor to a row and pressing Enter.
 
+## Installation
+
+With lazy.nvim:
+
+```lua
+{
+  "nicholasxjy/marker-jump.nvim",
+  opts = {
+    keymaps = {
+      toggle = "<leader>mj",
+    },
+  },
+}
+```
+
+With Neovim's built-in package manager:
+
+```lua
+vim.pack.add({
+  "https://github.com/nicholasxjy/marker-jump.nvim",
+})
+
+require("marker-jump").setup({
+  keymaps = {
+    toggle = "<leader>mj",
+  },
+})
+```
+
 ## Setup
 
 ```lua
