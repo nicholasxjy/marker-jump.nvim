@@ -12,7 +12,10 @@ local defaults = {
   },
   window = {
     width = 42,
+    position = "right",
     focus_on_open = true,
+    cursorline = true,
+    cursorline_hl = "MarkerJumpSelected",
   },
   jump_keys = "asdfghjklqwertyuiopzxcvbnm",
   labels = nil,
@@ -286,6 +289,10 @@ local function render_list()
   end
 end
 
+local function set_window_option(name, value)
+  pcall(vim.api.nvim_win_set_option, state.list_win, name, value)
+end
+
 local function set_list_options()
   vim.bo[state.list_buf].buftype = "nofile"
   vim.bo[state.list_buf].bufhidden = "wipe"
@@ -295,10 +302,15 @@ local function set_list_options()
   vim.wo[state.list_win].number = false
   vim.wo[state.list_win].relativenumber = false
   vim.wo[state.list_win].signcolumn = "no"
-  vim.wo[state.list_win].cursorline = true
+  vim.wo[state.list_win].cursorline = M.config.window.cursorline ~= false
   vim.wo[state.list_win].wrap = false
   vim.wo[state.list_win].foldcolumn = "0"
   vim.wo[state.list_win].winfixwidth = true
+  set_window_option("statuscolumn", "")
+
+  if M.config.window.cursorline_hl then
+    set_window_option("winhighlight", "CursorLine:" .. M.config.window.cursorline_hl)
+  end
 end
 
 local function map_list_keys()
@@ -325,13 +337,20 @@ local function map_list_keys()
 end
 
 local function open_list()
-  vim.cmd("botright " .. M.config.window.width .. "vnew")
+  vim.cmd("botright vertical " .. M.config.window.width .. "new")
   state.list_win = vim.api.nvim_get_current_win()
   state.list_buf = vim.api.nvim_get_current_buf()
   vim.api.nvim_buf_set_name(state.list_buf, "MarkerJump")
   set_list_options()
   render_list()
   map_list_keys()
+
+  if M.config.window.position == "left" then
+    vim.api.nvim_set_current_win(state.list_win)
+    vim.cmd("wincmd H")
+    vim.cmd("vertical resize " .. M.config.window.width)
+    state.list_win = vim.api.nvim_get_current_win()
+  end
 
   if #state.items > 0 then
     vim.api.nvim_win_set_cursor(state.list_win, { 3, 0 })

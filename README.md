@@ -7,7 +7,7 @@ lets you jump to them with short two-key labels.
 
 - Scans the current buffer for common function declarations.
 - Adds two-character marks in the signcolumn and optional virtual text hints.
-- Opens a right-side TUI list with `mark  function  line`.
+- Opens a left or right TUI list with `mark  function  line`.
 - Jumps from the source buffer by typing the visible mark, such as `aa` or `as`.
 - Jumps from the list window by moving the cursor to a row and pressing Enter.
 
@@ -46,7 +46,10 @@ require("marker-jump").setup({
   },
   window = {
     width = 42,
+    position = "right", -- "right" or "left"
     focus_on_open = true,
+    cursorline = true,
+    cursorline_hl = "MarkerJumpSelected",
   },
   jump_keys = "asdfghjklqwertyuiopzxcvbnm",
   labels = nil,
