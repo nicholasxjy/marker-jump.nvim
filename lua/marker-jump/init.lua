@@ -21,6 +21,7 @@ local defaults = {
   labels = nil,
   virtual_text = true,
   signs = true,
+  auto_refresh = true,
   auto_close_on_jump = false,
 }
 
@@ -33,6 +34,7 @@ local state = {
   labels = {},
   mapped_labels_by_buf = {},
   sign_names = {},
+  autocmd_group = nil,
 }
 
 M.config = vim.deepcopy(defaults)
@@ -174,6 +176,17 @@ local function is_list_open()
   return state.list_win and vim.api.nvim_win_is_valid(state.list_win)
 end
 
+local function is_list_buffer(bufnr)
+  return bufnr and bufnr == state.list_buf
+end
+
+local function is_source_buffer(bufnr)
+  return bufnr
+    and vim.api.nvim_buf_is_valid(bufnr)
+    and not is_list_buffer(bufnr)
+    and vim.bo[bufnr].buftype == ""
+end
+
 local function delete_label_maps(bufnr)
   if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
     return
@@ -191,6 +204,22 @@ local function close_list_window()
   end
   state.list_win = nil
   state.list_buf = nil
+end
+
+local function set_source(bufnr, winid)
+  if not is_source_buffer(bufnr) then
+    return false
+  end
+
+  if state.source_buf ~= bufnr then
+    delete_label_maps(state.source_buf)
+    clear_marks(state.source_buf)
+  end
+
+  local changed = state.source_buf ~= bufnr or state.source_win ~= winid
+  state.source_buf = bufnr
+  state.source_win = winid
+  return changed
 end
 
 function M.close()
@@ -363,10 +392,17 @@ end
 
 function M.refresh()
   if not state.source_buf or not vim.api.nvim_buf_is_valid(state.source_buf) then
-    state.source_buf = vim.api.nvim_get_current_buf()
+    local current_buf = vim.api.nvim_get_current_buf()
+    if not is_source_buffer(current_buf) then
+      return
+    end
+    state.source_buf = current_buf
   end
   if not state.source_win or not vim.api.nvim_win_is_valid(state.source_win) then
-    state.source_win = vim.api.nvim_get_current_win()
+    local current_win = vim.api.nvim_get_current_win()
+    if vim.api.nvim_win_get_buf(current_win) == state.source_buf then
+      state.source_win = current_win
+    end
   end
 
   delete_label_maps(state.source_buf)
@@ -381,13 +417,26 @@ function M.refresh()
   end
 end
 
+function M.refresh_current_buffer()
+  if not M.config.auto_refresh or not is_list_open() then
+    return
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  if not is_source_buffer(bufnr) then
+    return
+  end
+
+  set_source(bufnr, vim.api.nvim_get_current_win())
+  M.refresh()
+end
+
 function M.open()
   if is_list_open() then
     return
   end
 
-  state.source_buf = vim.api.nvim_get_current_buf()
-  state.source_win = vim.api.nvim_get_current_win()
+  set_source(vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win())
   M.refresh()
   open_list()
 end
@@ -403,6 +452,14 @@ end
 function M.setup(opts)
   M.config = vim.tbl_deep_extend("force", vim.deepcopy(defaults), opts or {})
   setup_highlights()
+
+  state.autocmd_group = vim.api.nvim_create_augroup("marker-jump.nvim", { clear = true })
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "BufReadPost" }, {
+    group = state.autocmd_group,
+    callback = function()
+      vim.schedule(M.refresh_current_buffer)
+    end,
+  })
 
   if M.config.keymaps.toggle then
     vim.keymap.set("n", M.config.keymaps.toggle, M.toggle, {
