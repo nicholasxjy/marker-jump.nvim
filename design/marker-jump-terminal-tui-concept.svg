@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <style>
+      text {
+        font-family: Menlo, Monaco, "SF Mono", Consolas, monospace;
+        dominant-baseline: text-before-edge;
+      }
+      .xs { font-size: 17px; }
+      .sm { font-size: 20px; }
+      .md { font-size: 23px; }
+      .lg { font-size: 26px; }
+      .dim { fill: #6f7c8d; }
+      .muted { fill: #93a1b4; }
+      .fg { fill: #d8dee9; }
+      .code { fill: #c8d0dc; }
+      .blue { fill: #8fbcff; }
+      .cyan { fill: #63d4ff; }
+      .green { fill: #9ece6a; }
+      .yellow { fill: #e0af68; }
+      .purple { fill: #bb9af7; }
+      .red { fill: #f7768e; }
+      .black { fill: #071018; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#05080d"/>
+
+  <!-- terminal canvas -->
+  <rect x="60" y="56" width="1480" height="888" fill="#0b1117" stroke="#243142" stroke-width="2"/>
+
+  <!-- nvim tabline -->
+  <rect x="60" y="56" width="1480" height="34" fill="#151b24"/>
+  <rect x="76" y="62" width="188" height="24" fill="#2d3748"/>
+  <text x="88" y="65" class="xs fg"> 1 src/router.ts </text>
+  <text x="285" y="65" class="xs muted"> marker-jump.nvim </text>
+  <text x="1288" y="65" class="xs muted">terminal nvim · 160x48</text>
+
+  <!-- editor areas -->
+  <rect x="60" y="90" width="1068" height="784" fill="#0b1117"/>
+  <rect x="1128" y="90" width="2" height="784" fill="#3b4658"/>
+  <rect x="1130" y="90" width="410" height="784" fill="#0f151d"/>
+
+  <!-- left winbar -->
+  <rect x="60" y="90" width="1068" height="32" fill="#101822"/>
+  <text x="78" y="96" class="xs muted">src/router.ts</text>
+  <text x="934" y="96" class="xs dim">typescript</text>
+  <text x="1032" y="96" class="xs dim">utf-8</text>
+
+  <!-- right winbar -->
+  <rect x="1130" y="90" width="410" height="32" fill="#101822"/>
+  <text x="1148" y="96" class="xs fg">MARKER JUMP</text>
+  <text x="1446" y="96" class="xs dim">5 items</text>
+
+  <!-- line-number/sign columns -->
+  <rect x="60" y="122" width="92" height="752" fill="#090f15"/>
+  <line x1="152" y1="122" x2="152" y2="874" stroke="#202a37"/>
+
+  <!-- active cursor line -->
+  <rect x="60" y="406" width="1068" height="31" fill="#172231"/>
+
+  <!-- code text -->
+  <g class="sm">
+    <text x="126" y="140" class="dim">  1</text>
+    <text x="172" y="140" class="blue">import { createRouter } from "./core"</text>
+
+    <text x="126" y="171" class="dim">  2</text>
+    <text x="172" y="171" class="blue">import type { Route, Context } from "./types"</text>
+
+    <text x="126" y="202" class="dim">  3</text>
+
+    <text x="126" y="233" class="dim">  4</text>
+    <rect x="76" y="229" width="40" height="24" fill="#2b2418" stroke="#e0af68"/>
+    <text x="82" y="232" class="yellow">aa</text>
+    <text x="172" y="233" class="purple">export</text>
+    <text x="260" y="233" class="purple">function</text>
+    <text x="380" y="233" class="fg">createRouteTable</text>
+    <text x="570" y="233" class="code">(routes: Route[]) {</text>
+    <text x="1008" y="233" class="dim">[aa]</text>
+
+    <text x="126" y="264" class="dim">  5</text>
+    <text x="172" y="264" class="blue">  const</text>
+    <text x="260" y="264" class="code"> table = new Map&lt;string, Route&gt;()</text>
+
+    <text x="126" y="295" class="dim">  6</text>
+    <text x="172" y="295" class="blue">  for</text>
+    <text x="232" y="295" class="code"> (const route of routes) table.set(route.path, route)</text>
+
+    <text x="126" y="326" class="dim">  7</text>
+    <text x="172" y="326" class="blue">  return</text>
+    <text x="270" y="326" class="code"> table</text>
+
+    <text x="126" y="357" class="dim">  8</text>
+    <text x="172" y="357" class="code">}</text>
+
+    <text x="126" y="388" class="dim">  9</text>
+
+    <text x="126" y="419" class="fg"> 10</text>
+    <rect x="76" y="415" width="40" height="24" fill="#15313d" stroke="#63d4ff"/>
+    <text x="82" y="418" class="cyan">as</text>
+    <text x="172" y="419" class="purple">function</text>
+    <text x="288" y="419" class="fg">normalizePath</text>
+    <text x="452" y="419" class="code">(path: string): string {</text>
+    <text x="1008" y="419" class="cyan">[as]</text>
+
+    <text x="126" y="450" class="dim"> 11</text>
+    <text x="172" y="450" class="blue">  return</text>
+    <text x="270" y="450" class="code"> path.replace(/\/+/g, "/").replace(/\/$/, "")</text>
+
+    <text x="126" y="481" class="dim"> 12</text>
+    <text x="172" y="481" class="code">}</text>
+
+    <text x="126" y="512" class="dim"> 13</text>
+
+    <text x="126" y="543" class="dim"> 14</text>
+    <rect x="76" y="539" width="40" height="24" fill="#2b2418" stroke="#e0af68"/>
+    <text x="82" y="542" class="yellow">df</text>
+    <text x="172" y="543" class="purple">async function</text>
+    <text x="346" y="543" class="fg">resolveMiddleware</text>
+    <text x="562" y="543" class="code">(ctx: Context) {</text>
+    <text x="1008" y="543" class="dim">[df]</text>
+
+    <text x="126" y="574" class="dim"> 15</text>
+    <text x="172" y="574" class="blue">  const</text>
+    <text x="260" y="574" class="code"> chain = await ctx.app.middleware()</text>
+
+    <text x="126" y="605" class="dim"> 16</text>
+    <text x="172" y="605" class="blue">  return</text>
+    <text x="270" y="605" class="code"> chain.filter(Boolean)</text>
+
+    <text x="126" y="636" class="dim"> 17</text>
+    <text x="172" y="636" class="code">}</text>
+
+    <text x="126" y="667" class="dim"> 18</text>
+
+    <text x="126" y="698" class="dim"> 19</text>
+    <rect x="76" y="694" width="40" height="24" fill="#2b2418" stroke="#e0af68"/>
+    <text x="82" y="697" class="yellow">jk</text>
+    <text x="172" y="698" class="purple">export const</text>
+    <text x="330" y="698" class="fg">matchRoute</text>
+    <text x="470" y="698" class="code"> = (path: string, table: RouteTable) =&gt; {</text>
+    <text x="1008" y="698" class="dim">[jk]</text>
+
+    <text x="126" y="729" class="dim"> 20</text>
+    <text x="172" y="729" class="blue">  const</text>
+    <text x="260" y="729" class="code"> key = normalizePath(path)</text>
+
+    <text x="126" y="760" class="dim"> 21</text>
+    <text x="172" y="760" class="blue">  return</text>
+    <text x="270" y="760" class="code"> table.get(key) ?? table.get("*")</text>
+
+    <text x="126" y="791" class="dim"> 22</text>
+    <text x="172" y="791" class="code">}</text>
+  </g>
+
+  <!-- right TUI list with box-like layout -->
+  <rect x="1146" y="142" width="376" height="44" fill="#0b1117"/>
+  <text x="1158" y="154" class="sm dim">mark</text>
+  <text x="1230" y="154" class="sm dim">symbol / summary</text>
+  <text x="1480" y="154" class="sm dim">line</text>
+  <line x1="1146" y1="186" x2="1522" y2="186" stroke="#2d3748"/>
+
+  <g class="sm">
+    <text x="1158" y="207" class="yellow">aa</text>
+    <text x="1230" y="207" class="fg">createRouteTable</text>
+    <text x="1480" y="207" class="dim">  4</text>
+    <text x="1230" y="235" class="dim">build route lookup table</text>
+
+    <rect x="1146" y="275" width="376" height="64" fill="#2c3f52"/>
+    <text x="1158" y="290" class="cyan">as</text>
+    <text x="1230" y="290" class="fg">normalizePath</text>
+    <text x="1480" y="290" class="fg"> 10</text>
+    <text x="1230" y="316" class="muted">clean URL path</text>
+
+    <text x="1158" y="359" class="yellow">df</text>
+    <text x="1230" y="359" class="fg">resolveMiddleware</text>
+    <text x="1480" y="359" class="dim"> 14</text>
+    <text x="1230" y="387" class="dim">load async middleware</text>
+
+    <text x="1158" y="443" class="yellow">jk</text>
+    <text x="1230" y="443" class="fg">matchRoute</text>
+    <text x="1480" y="443" class="dim"> 19</text>
+    <text x="1230" y="471" class="dim">match request path</text>
+
+    <text x="1158" y="527" class="yellow">kl</text>
+    <text x="1230" y="527" class="fg">renderNotFound</text>
+    <text x="1480" y="527" class="dim"> 24</text>
+    <text x="1230" y="555" class="dim">404 fallback response</text>
+  </g>
+
+  <line x1="1130" y1="638" x2="1540" y2="638" stroke="#2d3748"/>
+  <text x="1148" y="668" class="sm fg">keys</text>
+  <text x="1148" y="706" class="xs muted">aa/as/df...  jump to function</text>
+  <text x="1148" y="734" class="xs muted">j/k           select row</text>
+  <text x="1148" y="762" class="xs muted">Enter         jump selected</text>
+  <text x="1148" y="790" class="xs muted">r             rescan buffer</text>
+  <text x="1148" y="818" class="xs muted">q             close panel</text>
+
+  <!-- nvim statusline and cmdline -->
+  <rect x="60" y="874" width="1068" height="34" fill="#1f2a38"/>
+  <rect x="60" y="874" width="112" height="34" fill="#9ece6a"/>
+  <text x="80" y="882" class="sm black">NORMAL</text>
+  <text x="194" y="882" class="sm muted">marker-jump active</text>
+  <text x="430" y="882" class="sm fg">type mark: aa as df jk kl</text>
+  <text x="984" y="882" class="sm muted">10:1</text>
+
+  <rect x="1130" y="874" width="410" height="34" fill="#1f2a38"/>
+  <text x="1148" y="882" class="sm muted">[MarkerJump]</text>
+  <text x="1320" y="882" class="sm fg">5 functions</text>
+
+  <rect x="60" y="908" width="1480" height="36" fill="#0b1117"/>
+  <text x="78" y="916" class="sm dim">:MarkerJump</text>
+  <text x="230" y="916" class="sm muted">analysis complete · functions marked from current buffer</text>
+
+  <!-- footer note outside the terminal grid -->
+  <text x="60" y="962" class="xs muted">Terminal-first concept: native Neovim split, signcolumn marks, virtual text hints, statusline feedback, keyboard-only navigation.</text>
+</svg>
