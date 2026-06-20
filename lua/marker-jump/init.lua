@@ -109,7 +109,59 @@ local function match_function_name(line)
   end
 end
 
-local function scan(bufnr)
+local function is_function_symbol(kind)
+  return kind == 6 or kind == 9 or kind == 12
+end
+
+local function symbol_range(symbol)
+  if symbol.range then
+    return symbol.range
+  end
+  return symbol.location and symbol.location.range
+end
+
+local function collect_lsp_symbols(symbols, items)
+  for _, symbol in ipairs(symbols or {}) do
+    local range = symbol_range(symbol)
+    if symbol.name and is_function_symbol(symbol.kind) and range and range.start then
+      items[#items + 1] = {
+        name = symbol.name,
+        lnum = range.start.line + 1,
+      }
+    end
+
+    if symbol.children then
+      collect_lsp_symbols(symbol.children, items)
+    end
+  end
+end
+
+local function lsp_function_symbols(bufnr)
+  if not vim.lsp.buf_request_sync then
+    return {}
+  end
+
+  local params = vim.lsp.util.make_text_document_params(bufnr)
+  local responses = vim.lsp.buf_request_sync(bufnr, "textDocument/documentSymbol", params, 500)
+  local items = {}
+
+  for _, response in pairs(responses or {}) do
+    if response.result then
+      collect_lsp_symbols(response.result, items)
+    end
+  end
+
+  table.sort(items, function(left, right)
+    if left.lnum == right.lnum then
+      return left.name < right.name
+    end
+    return left.lnum < right.lnum
+  end)
+
+  return items
+end
+
+local function scan_from_patterns(bufnr)
   local labels = generate_labels()
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   local items = {}
@@ -124,6 +176,32 @@ local function scan(bufnr)
         summary = truncate(trim(line), 72),
       }
     end
+  end
+
+  state.labels = labels
+  state.items = items
+  return items
+end
+
+local function scan(bufnr)
+  local labels = generate_labels()
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local items = {}
+
+  for _, symbol in ipairs(lsp_function_symbols(bufnr)) do
+    if labels[#items + 1] then
+      local line = lines[symbol.lnum] or symbol.name
+      items[#items + 1] = {
+        label = labels[#items + 1],
+        name = symbol.name,
+        lnum = symbol.lnum,
+        summary = truncate(trim(line), 72),
+      }
+    end
+  end
+
+  if #items == 0 then
+    return scan_from_patterns(bufnr)
   end
 
   state.labels = labels

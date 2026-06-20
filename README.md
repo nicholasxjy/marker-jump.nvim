@@ -5,7 +5,7 @@ lets you jump to them with short two-key labels.
 
 ## Features
 
-- Scans the current buffer for common function declarations.
+- Uses LSP document symbols for functions, with a declaration scan fallback.
 - Adds two-character marks in the signcolumn and optional virtual text hints.
 - Opens a left or right TUI list with `mark  function  line`.
 - Refreshes the marks and list when you switch to another buffer.
